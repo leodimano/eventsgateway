@@ -27,7 +27,8 @@ import (
 	"math/rand"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
+	uuid "https://github.com/gofrs/uuid"
+
 	"github.com/spf13/viper"
 	"github.com/topfreegames/eventsgateway/client"
 	"github.com/topfreegames/eventsgateway/logger"
@@ -117,7 +118,9 @@ func buildProps(size string) map[string]string {
 	}
 	props := map[string]string{}
 	for i := 0; i < n; i++ {
-		props[uuid.NewV4().String()] = uuid.NewV4().String()
+		newKeyId, _ := uuid.NewV4()
+		newValueId, _ := uuid.NewV4()
+		props[newKeyId.String()] = newValueId.String()
 	}
 	return props
 }

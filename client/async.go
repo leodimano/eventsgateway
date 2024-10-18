@@ -14,9 +14,10 @@ import (
 	"sync"
 	"time"
 
+	uuid "https://github.com/gofrs/uuid"
+
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
 	"github.com/opentracing/opentracing-go"
-	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/viper"
 	"github.com/topfreegames/eventsgateway/logger"
 	"github.com/topfreegames/eventsgateway/metrics"
@@ -214,7 +215,8 @@ func (a *gRPCClientAsync) sendRoutine() {
 
 	send := func() {
 		cpy := req
-		cpy.Id = uuid.NewV4().String()
+		newId, _ := uuid.NewV4()
+		cpy.Id = newId.String()
 		req = &pb.SendEventsRequest{}
 		req.Events = make([]*pb.Event, 0, a.batchSize)
 		go a.sendEvents(cpy, 0)

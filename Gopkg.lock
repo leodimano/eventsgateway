@@ -355,12 +355,8 @@
   revision = "8732c616f52954686704c8645fe1a9d59e9df7c1"
 
 [[projects]]
-  digest = "1:7f569d906bdd20d906b606415b7d794f798f91a62fcfb6a4daa6d50690fb7a3f"
-  name = "github.com/satori/go.uuid"
-  packages = ["."]
-  pruneopts = ""
-  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
-  version = "v1.2.0"
+  name = "https://github.com/gofrs/uuid"
+  version = "v2.0.0"
 
 [[projects]]
   digest = "1:42a42c4bc67bed17f40fddf0f24d4403e25e7b96488456cf4248e6d16659d370"
@@ -652,7 +648,7 @@
     "github.com/prometheus/client_golang/prometheus",
     "github.com/prometheus/client_golang/prometheus/promhttp",
     "github.com/rcrowley/go-metrics",
-    "github.com/satori/go.uuid",
+    "https://github.com/gofrs/uuid",
     "github.com/sirupsen/logrus",
     "github.com/sirupsen/logrus/hooks/test",
     "github.com/spf13/cobra",

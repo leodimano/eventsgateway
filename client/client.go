@@ -14,7 +14,8 @@ import (
 	"sync"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
+	uuid "https://github.com/gofrs/uuid"
+
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/topfreegames/eventsgateway/logger"
@@ -168,8 +169,9 @@ func (c *Client) GracefulStop() error {
 }
 
 func buildEvent(name string, props map[string]string, topic string, time time.Time) *pb.Event {
+	newId, _ := uuid.NewV4()
 	return &pb.Event{
-		Id:        uuid.NewV4().String(),
+		Id:        newId.String(),
 		Name:      name,
 		Topic:     topic,
 		Props:     props,
