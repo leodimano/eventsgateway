@@ -27,7 +27,7 @@ import (
 	"math/rand"
 	"time"
 
-	uuid "https://github.com/gofrs/uuid"
+	uuid "github.com/gofrs/uuid"
 
 	"github.com/spf13/viper"
 	"github.com/topfreegames/eventsgateway/client"

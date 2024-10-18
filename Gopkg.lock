@@ -355,7 +355,7 @@
   revision = "8732c616f52954686704c8645fe1a9d59e9df7c1"
 
 [[projects]]
-  name = "https://github.com/gofrs/uuid"
+  name = "github.com/gofrs/uuid"
   version = "v2.0.0"
 
 [[projects]]
@@ -648,7 +648,7 @@
     "github.com/prometheus/client_golang/prometheus",
     "github.com/prometheus/client_golang/prometheus/promhttp",
     "github.com/rcrowley/go-metrics",
-    "https://github.com/gofrs/uuid",
+    "github.com/gofrs/uuid",
     "github.com/sirupsen/logrus",
     "github.com/sirupsen/logrus/hooks/test",
     "github.com/spf13/cobra",

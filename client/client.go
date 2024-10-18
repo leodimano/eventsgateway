@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	uuid "https://github.com/gofrs/uuid"
+	uuid "github.com/gofrs/uuid"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
