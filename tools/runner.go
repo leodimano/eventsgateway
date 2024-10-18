@@ -24,11 +24,12 @@ package tools
 
 import (
 	"context"
-	"github.com/opentracing/opentracing-go"
 	"math/rand"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
+	"github.com/opentracing/opentracing-go"
+
+	uuid "github.com/gofrs/uuid"
 	"github.com/spf13/viper"
 	"github.com/topfreegames/eventsgateway/v4/client"
 	"github.com/topfreegames/eventsgateway/v4/logger"
@@ -127,7 +128,11 @@ func buildProps(size string) map[string]string {
 	}
 	props := map[string]string{}
 	for i := 0; i < n; i++ {
-		props[uuid.NewV4().String()] = uuid.NewV4().String()
+		id, err := uuid.NewV4()
+		if err != nil {
+			panic(err)
+		}
+		props[id.String()] = id.String()
 	}
 	return props
 }

@@ -10,16 +10,17 @@ package client
 import (
 	"context"
 	"fmt"
+	"strings"
+	"sync"
+	"time"
+
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
 	"github.com/opentracing/opentracing-go"
 	"github.com/topfreegames/eventsgateway/v4/metrics"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/otel"
-	"strings"
-	"sync"
-	"time"
 
-	uuid "github.com/satori/go.uuid"
+	uuid "github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/topfreegames/eventsgateway/v4/logger"
@@ -135,7 +136,12 @@ func (c *Client) Send(
 		"event":     name,
 	})
 	l.Debug("sending event")
-	if err := c.client.send(ctx, buildEvent(name, props, c.topic, time.Now())); err != nil {
+	event, err := buildEvent(name, props, c.topic, time.Now())
+	if err != nil {
+		l.WithError(err).Error("error building event")
+		return err
+	}
+	if err := c.client.send(ctx, event); err != nil {
 		l.WithError(err).Error("send event failed")
 		return err
 	}
@@ -155,7 +161,12 @@ func (c *Client) SendToTopic(
 		"topic":     topic,
 	})
 	l.Debug("sending event")
-	if err := c.client.send(ctx, buildEvent(name, props, topic, time.Now())); err != nil {
+	event, err := buildEvent(name, props, topic, time.Now())
+	if err != nil {
+		l.WithError(err).Error("error building event")
+		return err
+	}
+	if err := c.client.send(ctx, event); err != nil {
 		l.WithError(err).Error("send event failed")
 		return err
 	}
@@ -175,7 +186,12 @@ func (c *Client) SendAtTime(
 		"time":      time,
 	})
 	l.Debug("sending event")
-	if err := c.client.send(ctx, buildEvent(name, props, c.topic, time)); err != nil {
+	event, err := buildEvent(name, props, c.topic, time)
+	if err != nil {
+		l.WithError(err).Error("error building event")
+		return err
+	}
+	if err := c.client.send(ctx, event); err != nil {
 		l.WithError(err).Error("send event failed")
 		return err
 	}
@@ -191,12 +207,16 @@ func (c *Client) GracefulStop() error {
 	return c.client.GracefulStop()
 }
 
-func buildEvent(name string, props map[string]string, topic string, time time.Time) *pb.Event {
+func buildEvent(name string, props map[string]string, topic string, time time.Time) (*pb.Event, error) {
+	id, err := uuid.NewV4()
+	if err != nil {
+		return nil, err
+	}
 	return &pb.Event{
-		Id:        uuid.NewV4().String(),
+		Id:        id.String(),
 		Name:      name,
 		Topic:     topic,
 		Props:     props,
 		Timestamp: time.UnixNano() / 1000000,
-	}
+	}, nil
 }
